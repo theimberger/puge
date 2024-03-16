@@ -17,5 +17,5 @@ export default defineConfig({
       "related_applications": []
     }
   })],
-  base: '/record-needles/'
+  base: '/puge/'
 })
