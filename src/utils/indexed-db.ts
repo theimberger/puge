@@ -1,48 +1,57 @@
 import { openDB, DBSchema } from 'idb';
 
 interface MyDB extends DBSchema {
-  projects: {
+  selected: {
+    value: string;
+    key: string;
+  }
+  budgets: {
     value: {
       name: string;
-      rows: number[]
+      unit: string;
+      period: string;
+      rolling: boolean;
+      limit: number;
+      lines: number[];
+      useDecimal: boolean;
     };
     key: string;
     indexes: { 'by-name': string };
   };
 }
 
-const dbPromise = openDB<MyDB>('RecordNeedlesDb', 2, {
+const dbPromise = openDB<MyDB>('PugeDb', 1, {
   upgrade(db) {
-    const projectStore = db.createObjectStore('projects', {
+    const budgetstore = db.createObjectStore('budgets', {
       keyPath: 'name',
     });
-    projectStore.createIndex('by-name', 'name');
+    budgetstore.createIndex('by-name', 'name');
   },
 });
 
 export const idbGet = async (key: string) => {
-  return (await dbPromise).get('projects', key);
+  return (await dbPromise).get('budgets', key);
 }
 
-export const idbSet = async (val: {
-  name: string;
-  rows: number[]
-}) => {
-  return (await dbPromise).put('projects', val);
-}
+// export const idbSet = async (val: {
+//   name: string;
+//   rows: number[]
+// }) => {
+//   return (await dbPromise).put('budgets', val);
+// }
 
 export const idbDel = async (key: string) => {
-  return (await dbPromise).delete('projects', key);
+  return (await dbPromise).delete('budgets', key);
 }
 
 export const idbClear = async () => {
-  return (await dbPromise).clear('projects');
+  return (await dbPromise).clear('budgets');
 }
 
 export const idbKeys = async () => {
-  return (await dbPromise).getAllKeys('projects');
+  return (await dbPromise).getAllKeys('budgets');
 }
 
 export const idbAll = async () => {
-  return (await dbPromise).getAll('projects');
+  return (await dbPromise).getAll('budgets');
 }
