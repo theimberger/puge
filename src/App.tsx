@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { idbAll } from './utils/indexed-db'
 import { CreateBudget } from './screens'
@@ -6,7 +6,7 @@ import { CreateBudget } from './screens'
 import './App.css'
 
 const App = () => {
-  const [currentScreen, setCurrentScreen] = useState('home')
+  // const [currentScreen, setCurrentScreen] = useState('home')
   useEffect(() => {
     const asyncEffect = async () => {
       const budgets = await idbAll();

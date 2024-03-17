@@ -73,11 +73,13 @@ const CreateBudget = () => {
 
   const handleSubmit = () => {
     let errorMessage = ''
-    Object.keys(budgetOptions).forEach((key) => {
-      if (!budgetOptions[key]) {
-        errorMessage = 'All fields are required.';
-      }
-    })
+    if (!budgetOptions.name) {
+      errorMessage = 'Name is required';
+    }
+
+    if (!budgetOptions.unit) {
+      errorMessage = 'Unit is required';
+    }
 
     if (budgetOptions.limit < 0 || typeof budgetOptions.limit !== 'number') {
       errorMessage = 'Limit must be a positive number';
