@@ -4,12 +4,6 @@ import { useState } from 'react'
 
 import BudgetType from '../../types/BudgetType'
 
-enum TextFieldEnum {
-  name = 'name',
-  limit = 'limit',
-  unit = 'unit',
-}
-
 interface CreateBudgetProps {
   handleCreate: (budgetOptions: BudgetType) => void
 }
@@ -63,28 +57,6 @@ const CreateBudget = ({
     )
   }
 
-  const OptionsInput = ({ field }: { field: TextFieldEnum }) => {
-    let fieldType = 'text';
-    if (field === 'limit') fieldType = 'number';
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setOptions({
-        ...budgetOptions,
-        [field]: e.target.value
-      })
-    }
-
-    return (
-      <input
-        id={ field }
-        name={ field }
-        type={ fieldType }
-        value={ budgetOptions[field] }
-        onChange={ handleChange }
-      />
-    )
-  }
-
   const handleSubmit = () => {
     let errorMessage = ''
     if (!budgetOptions.name) {
@@ -107,19 +79,44 @@ const CreateBudget = ({
     handleCreate(budgetOptions)
   }
 
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+    setOptions({
+      ...budgetOptions,
+      [field]: field === 'limit' ? Number(e.target.value) : e.target.value
+    })
+  }
+
   return (
     <main className={createClass}>
         <div className='create-budget__input-group'>
           <label htmlFor="name">Name</label>
-          <OptionsInput field={ TextFieldEnum.name } />
+          <input
+            id='name'
+            name='name'
+            type='text'
+            value={ budgetOptions.name }
+            onChange={ (e) => handleTextChange(e, 'name') }
+          />
         </div>
         <div className='create-budget__input-group'>
           <label htmlFor="limit">Limit</label>
-          <OptionsInput field={ TextFieldEnum.limit } />
+          <input
+            id='limit'
+            name='limit'
+            type='number'
+            value={ budgetOptions.limit }
+            onChange={ (e) => handleTextChange(e, 'limit') }
+          />
         </div>
         <div className='create-budget__input-group'>
           <label htmlFor="unit">Unit</label>
-          <OptionsInput field={ TextFieldEnum.unit } />
+          <input
+            id='unit'
+            name='unit'
+            type='text'
+            value={ budgetOptions.unit }
+            onChange={ (e) => handleTextChange(e, 'unit') }
+          />
         </div>
         <div className='create-budget__input-group'>
           <label htmlFor="unitPlacement">Unit placement</label>

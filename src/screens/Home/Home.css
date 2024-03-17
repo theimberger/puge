@@ -6,6 +6,7 @@
   height: 100vh;
   background-color: #FFFFFF;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .home-main h1, h2 {
@@ -16,6 +17,7 @@
   margin-bottom: 1rem;
 }
 
+.home__goto-budget,
 .home__create-budget {
   margin-top: 2rem;
   font-size: 1.5rem;
@@ -25,4 +27,10 @@
   cursor: pointer;
   background-color: #333333;
   color: #FFFFFF;
+}
+
+.home__goto-budget {
+  background-color: #FFFFFF;
+  color: #333333;
+  border: 1px solid #333333;
 }

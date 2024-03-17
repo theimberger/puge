@@ -42,7 +42,7 @@ export const idbGet = async (key: string) => {
   return (await dbPromise).get('budgets', key);
 }
 
-export const idbSet = async (val: BudgetType) => {
+export const addBudgetRecord = async (val: BudgetType) => {
   const newBudget = {
     name: val.name,
     unit: val.unit,
@@ -50,8 +50,8 @@ export const idbSet = async (val: BudgetType) => {
     theme: val.theme,
     period: val.period,
     rolling: val.rolling,
-    limit: val.limit,
-    current: val.current || val.limit,
+    limit: val.decimalType === "none" ? val.limit : val.limit * 100,
+    current: val.decimalType === "none" ? val.limit : val.limit * 100,
     lines: val.lines || [],
     decimalType: val.decimalType,
   };
