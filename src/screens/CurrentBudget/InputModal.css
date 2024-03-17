@@ -1,0 +1,39 @@
+.budget-input-modal {
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  width: 100%;
+  padding: 2rem;
+  background-color: #333333;
+}
+
+.budget-input-modal__inputs {
+  display: flex;
+  justify-content: space-between;
+  align-items: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 36rem;
+  height: 36rem;
+  margin-bottom: 5rem;
+}
+
+.budget-input-modal__inputs__button {
+  font-size: 6.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10rem;
+  height: 7rem;
+}
+
+.budget-input-modal__inputs__button:last-of-type {
+  background-color: blue;
+  border-radius: .5rem;
+}

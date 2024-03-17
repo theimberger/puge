@@ -1,0 +1,11 @@
+.curent-budget__date {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.current-budget__date__line {
+  margin: .3em 1em;
+  display: inline-block;
+  width: 3em;
+  border: 1px solid #FFFFFF;
+}

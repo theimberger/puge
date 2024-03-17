@@ -41,6 +41,10 @@ const App = () => {
     document.cookie = `activeBudget=${name}`
     setCurrentScreen('budget')
   }
+  const goHome = () => {
+    document.cookie = ""
+    setCurrentScreen('home')
+  }
 
   return (
     <>
@@ -55,7 +59,10 @@ const App = () => {
         <CreateBudget handleCreate={handleNewBudget} />
       }
       { currentScreen === 'budget' &&
-        <CurrentBudget budget={budgets.find(budget => budget.name === activeBudget)} />
+        <CurrentBudget
+          budget={budgets.find(budget => budget.name === activeBudget)}
+          goHome={goHome}
+        />
       }
     </>
   )

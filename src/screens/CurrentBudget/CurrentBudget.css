@@ -4,15 +4,29 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   padding: 20px;
+}
+
+.current-budget-main--dark {
+  background-color: #333333;
+  color: #fff;
+}
+
+.current-budget__title {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  font-size: 2rem;
+  cursor: pointer;
 }
 
 .current-budget__current-total {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  font-size: 3rem;
+  font-size: 4rem;
   margin-bottom: 20px;
+  cursor: pointer;
 }

@@ -1,9 +1,21 @@
 import './CurrentBudget.css'
 
+import { useState } from 'react'
+
 import BudgetType from '../../types/BudgetType'
 import BudgetLines from './BudgetLines'
+import DateLine from './DateLine'
+import InputModal from './InputModal'
+import { getCurrentDateString } from './utils'
 
-const CurrentBudget = ({ budget }: { budget?: BudgetType }) => {
+const CurrentBudget = ({
+  budget,
+  goHome,
+}: {
+  goHome: () => void,
+  budget?: BudgetType
+}) => {
+  const [showInputModal, setModalState] = useState(false);
   if (!budget) return null;
   let mainClass = 'current-budget-main';
   if (budget.theme === 'dark') mainClass += ' current-budget-main--dark';
@@ -14,17 +26,24 @@ const CurrentBudget = ({ budget }: { budget?: BudgetType }) => {
     return num / 100;
   }
 
+  const openInputModal = () => {
+    setModalState(true);
+  }
+
   return (
     <main className={mainClass}>
-      <h1>{budget.name}</h1>
+      { showInputModal && <InputModal /> }
       <BudgetLines budgetLines={budget.lines} />
-      <div className="current-budget__current-total">
+      <div className="current-budget__current-total" onClick={openInputModal}>
         { budget.unitPlacement === 'prefix' && <div>{budget.unit}</div> }
         <div>{ handleDecimal(budget.current || 0) }</div>
         { budget.unitPlacement === 'suffix' && <div>{budget.unit}</div> }
       </div>
-      <div>
-        Tap to add a new line
+      <div onClick={openInputModal}>
+        <DateLine date={getCurrentDateString()} />
+      </div>
+      <div className='current-budget__title' onClick={goHome}>
+      〈 { budget.name }
       </div>
     </main>
   )
