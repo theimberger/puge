@@ -2,20 +2,30 @@ import './CreateBudget.css'
 
 import { useState } from 'react'
 
+import BudgetType from '../../types/BudgetType'
+
 enum TextFieldEnum {
   name = 'name',
   limit = 'limit',
   unit = 'unit',
 }
 
-const CreateBudget = () => {
+interface CreateBudgetProps {
+  handleCreate: (budgetOptions: BudgetType) => void
+}
+
+const CreateBudget = ({
+  handleCreate
+}: CreateBudgetProps) => {
   const [budgetOptions, setOptions] = useState({
-    name: '',
+    name: 'Budget',
     limit: 100,
     unit: '$',
     unitPlacement: 'prefix',
     period: 'monthly',
-    theme: 'light'
+    decimalType: 'standard',
+    theme: 'light',
+    rolling: true,
   })
 
   const [budgetError, setBudgetError] = useState('')
@@ -29,14 +39,18 @@ const CreateBudget = () => {
     if (
       budgetOptions.period === option ||
       budgetOptions.theme === option ||
-      budgetOptions.unitPlacement === option
+      budgetOptions.unitPlacement === option ||
+      budgetOptions.decimalType === option ||
+      (budgetOptions.rolling && option === 'yes') ||
+      (!budgetOptions.rolling && option === 'no')
     ) {
       optionsButtonClass = 'create-budget__input-options--active'
     }
     const handleButtonClick = () => {
+      const adjustForBoolean = option === 'yes' || option === 'no';
       setOptions({
         ...budgetOptions,
-        [optionFor]: option
+        [optionFor]: adjustForBoolean ? option === 'yes' : option,
       })
     }
     return (
@@ -89,6 +103,8 @@ const CreateBudget = () => {
       setBudgetError(errorMessage)
       return
     }
+
+    handleCreate(budgetOptions)
   }
 
   return (
@@ -118,6 +134,21 @@ const CreateBudget = () => {
             <OptionsButton option='daily' optionFor='period' />
             <OptionsButton option='weekly' optionFor='period' />
             <OptionsButton option='monthly' optionFor='period' />
+          </div>
+        </div>
+        <div className='create-budget__input-group'>
+          <label htmlFor="rolling">Rolls over</label>
+          <div className='create-budget__input-options'>
+            <OptionsButton option='yes' optionFor='rolling' />
+            <OptionsButton option='no' optionFor='rolling' />
+          </div>
+        </div>
+        <div className='create-budget__input-group create-budget__input-group--decimal'>
+          <label htmlFor="decimalType">Decimal Type</label>
+          <div className='create-budget__input-options'>
+            <OptionsButton option='standard' optionFor='decimalType' />
+            <OptionsButton option='none' optionFor='decimalType' />
+            <OptionsButton option='double 0' optionFor='decimalType' />
           </div>
         </div>
         <div className='create-budget__input-group'>

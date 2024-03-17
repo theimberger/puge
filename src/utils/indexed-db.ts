@@ -1,4 +1,10 @@
 import { openDB, DBSchema } from 'idb';
+import BudgetType from '../types/BudgetType';
+
+interface LineType {
+  change: number;
+  date: string;
+}
 
 interface MyDB extends DBSchema {
   selected: {
@@ -9,18 +15,21 @@ interface MyDB extends DBSchema {
     value: {
       name: string;
       unit: string;
+      unitPlacement: string;
+      theme: string;
       period: string;
       rolling: boolean;
       limit: number;
-      lines: number[];
-      useDecimal: boolean;
+      current: number;
+      lines: LineType[];
+      decimalType: string;
     };
     key: string;
     indexes: { 'by-name': string };
   };
 }
 
-const dbPromise = openDB<MyDB>('PugeDb', 1, {
+const dbPromise = openDB<MyDB>('PugeDb', 4, {
   upgrade(db) {
     const budgetstore = db.createObjectStore('budgets', {
       keyPath: 'name',
@@ -33,12 +42,22 @@ export const idbGet = async (key: string) => {
   return (await dbPromise).get('budgets', key);
 }
 
-// export const idbSet = async (val: {
-//   name: string;
-//   rows: number[]
-// }) => {
-//   return (await dbPromise).put('budgets', val);
-// }
+export const idbSet = async (val: BudgetType) => {
+  const newBudget = {
+    name: val.name,
+    unit: val.unit,
+    unitPlacement: val.unitPlacement,
+    theme: val.theme,
+    period: val.period,
+    rolling: val.rolling,
+    limit: val.limit,
+    current: val.current || val.limit,
+    lines: val.lines || [],
+    decimalType: val.decimalType,
+  };
+
+  return (await dbPromise).put('budgets', newBudget);
+}
 
 export const idbDel = async (key: string) => {
   return (await dbPromise).delete('budgets', key);

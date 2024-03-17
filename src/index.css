@@ -2,9 +2,10 @@ html, body, #root {
   font-size: 10px;
   font-weight: 400;
   font-style: normal;
+  overflow-x: hidden;
 }
 
-html, body, button, input #root {
+html, body, button, input, #root {
   font-family: "Space Mono", monospace;
 }
 
