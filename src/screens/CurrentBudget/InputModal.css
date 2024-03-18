@@ -10,7 +10,34 @@
   height: 100%;
   width: 100%;
   padding: 2rem;
-  background-color: #333333;
+  background-color: #FFFFFF;
+  color: #333333
+}
+
+.budget-input-modal__display {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 100%;
+  font-size: 6rem;
+  width: 30rem;
+  margin-bottom: 2rem;
+}
+
+@keyframes slide {
+  0% { margin-top: 100%; }
+  100% { margin-top: 0%; }
+}
+
+.budget-input-modal__display__digit {
+  height: 8rem;
+  overflow: hidden;
+}
+
+.budget-input-modal__display__digit__item {
+  animation-name: slide;
+  animation-duration: .3s;
 }
 
 .budget-input-modal__inputs {
@@ -21,19 +48,45 @@
   flex-wrap: wrap;
   width: 36rem;
   height: 36rem;
-  margin-bottom: 5rem;
 }
 
 .budget-input-modal__inputs__button {
-  font-size: 6.5rem;
+  font-size: 4rem;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 10rem;
   height: 7rem;
+  cursor: pointer;
 }
 
-.budget-input-modal__inputs__button:last-of-type {
-  background-color: blue;
+.budget-input-modal__inputs__button--double {
+  font-size: 3rem;
+}
+
+.budget-input-modal__submit {
+  display: flex;
+  height: 5rem;
+  margin-bottom: 5rem;
+  margin-right: .5rem;
+  width: 30rem;
+  justify-content: space-between;
+}
+
+.budget-input-modal__submit button {
+  background-color: inherit;
+  border: 0;
   border-radius: .5rem;
+  font-size: 2rem;
+  height: 4rem;
+  width: 30%;
+  text-transform: uppercase;
+  background: lightgreen;
+}
+
+.budget-input-modal__submit
+button:last-of-type {
+  background: red;
+  color: #333333;
+  width: 65%;
 }

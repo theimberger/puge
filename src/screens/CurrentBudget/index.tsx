@@ -30,9 +30,20 @@ const CurrentBudget = ({
     setModalState(true);
   }
 
+  const updateBudget = (newNumber: number, type: string) => {
+    setModalState(false);
+    console.log(newNumber, type);
+  }
+
   return (
     <main className={mainClass}>
-      { showInputModal && <InputModal /> }
+      { showInputModal &&
+        <InputModal
+          decimalType={ budget.decimalType }
+          handleUpdate={ updateBudget }
+          theme={ budget.theme }
+        />
+      }
       <BudgetLines budgetLines={budget.lines} />
       <div className="current-budget__current-total" onClick={openInputModal}>
         { budget.unitPlacement === 'prefix' && <div>{budget.unit}</div> }
