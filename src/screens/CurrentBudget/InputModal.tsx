@@ -11,6 +11,7 @@ const InputModal = ({
   handleUpdate: (number: number, type: string) => void;
   theme: string;
 }) => {
+  console.log('theme', theme);
   const [inputNumbers, setInputNumbers] = useState<string[]>([])
   const buttonList = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "⌫"];
   if (decimalType === 'none') buttonList[9] = '';
