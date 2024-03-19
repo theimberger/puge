@@ -19,6 +19,7 @@ const CurrentBudget = ({
 }) => {
   if (!budgetLines) return null;
 
+  console.log(budgetLines)
   let listClass = 'current-budget__budget-lines'
   if (theme === 'dark') listClass += ' current-budget__budget-lines--dark';
   if (theme === 'light') listClass += ' current-budget__budget-lines--light';
@@ -35,13 +36,14 @@ const CurrentBudget = ({
     )
   }
 
-  let runningDate = ''
-
   return (
     <ul className={listClass}>
       {budgetLines.map((line, index) => {
-        const showDate = (runningDate === line.date || runningDate === getCurrentDateString());
-        if (showDate) runningDate = line.date;
+        const showDate = (
+          line.date !== getCurrentDateString() &&
+          line.date !== budgetLines[index + 1]?.date
+        );
+
         return (
           <li key={`${index}-budget-line`}>
             <ChangeLine change={line.change} />

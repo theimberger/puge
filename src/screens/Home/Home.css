@@ -34,3 +34,8 @@
   color: #333333;
   border: 1px solid #333333;
 }
+
+.home-main__budget-list {
+  display: flex;
+  flex-direction: column;
+}

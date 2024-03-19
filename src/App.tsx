@@ -5,6 +5,7 @@ import { CreateBudget, CurrentBudget, Home } from './screens'
 
 import './App.css'
 import BudgetType from './types/BudgetType'
+import { getCurrentDateString } from './screens/CurrentBudget/utils'
 
 interface AppStateType {
   currentScreen: string,
@@ -29,6 +30,7 @@ class App extends Component {
       if (activeBudgetName) {
         newState.activeBudget = activeBudgetName;
         newState.currentScreen = 'budget'
+        this.updateBudgetLimit(activeBudgetName, budgets)
       } else {
         newState.currentScreen = 'home'
       }
@@ -37,6 +39,18 @@ class App extends Component {
     }
 
     this.setState(newState)
+  }
+
+  updateBudgetLimit = async (name: string, budgets: BudgetType[]) => {
+    const budget = budgets.find(budget => budget.name === name)
+    if (budget && budget.lines?.length) {
+      const currentDate = getCurrentDateString();
+      const lastUpdate = budget.lines[budget.lines.length - 1];
+      const period = budget.period;
+      if (period === 'daily') {
+        console.log(currentDate, lastUpdate);
+      }
+    }
   }
 
   componentDidMount = () => {  

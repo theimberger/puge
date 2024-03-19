@@ -13,7 +13,7 @@ const Home = ({
     <h1>Welcome to Puge</h1>
     <h2>the simplist budgeting app</h2>
     {budgetsList.length > 0 ? (
-      <div>
+      <div className='home-main__budget-list'>
         {budgetsList.map((budget, i) => (
           <button
             className='home__goto-budget'
