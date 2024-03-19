@@ -11,7 +11,6 @@ const InputModal = ({
   handleUpdate: (number: number, type: string) => void;
   theme: string;
 }) => {
-  console.log('theme', theme);
   const [inputNumbers, setInputNumbers] = useState<string[]>([])
   const buttonList = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "⌫"];
   if (decimalType === 'none') buttonList[9] = '';
@@ -38,8 +37,12 @@ const InputModal = ({
     setInputNumbers([])
   }
 
+  let modalClass = 'budget-input-modal'
+  if (theme === 'dark') modalClass += ' budget-input-modal--dark'
+  if (theme === 'light') modalClass += ' budget-input-modal--light'
+
   return (
-    <div className='budget-input-modal'>
+    <div className={modalClass}>
       <div className='budget-input-modal__display'>
         { inputNumbers.map((digit: string, i: number) => {
           let addDecimal = decimalType === 'double 0' && i === inputNumbers.length - 2

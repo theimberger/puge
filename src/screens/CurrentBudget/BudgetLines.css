@@ -1,0 +1,25 @@
+.current-budget__budget-lines {
+  list-style-type: none;
+  padding: 0;
+  font-size: 1.5rem;
+}
+
+.current-budget__budget-lines li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+.current-budget__budget-lines .curent-budget__date {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.current-budget__budget-lines .current-budget__date__line {
+  margin: .3rem 1rem;
+  display: inline-block;
+  width: 3em;
+  border: 1px solid #FFFFFF;
+}

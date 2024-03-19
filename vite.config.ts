@@ -7,12 +7,12 @@ export default defineConfig({
   plugins: [react(), VitePWA({
     registerType: 'autoUpdate',
     manifest: {
-      "name": "Record Needles - a simple stitch counter",
-      "short_name": "Needles",
+      "name": "Puge - Budgeting",
+      "short_name": "Puge",
       "start_url": ".",
       "display": "standalone",
       "background_color": "#335555",
-      "description": "A stitch counting app.",
+      "description": "The simplist budgeting app.",
       "icons": [],
       "related_applications": []
     }

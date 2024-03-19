@@ -59,6 +59,16 @@ export const addBudgetRecord = async (val: BudgetType) => {
   return (await dbPromise).put('budgets', newBudget);
 }
 
+export const addBudgetLine = async (key: string, line: LineType) => {
+  const budget = await idbGet(key);
+  if (budget) {
+    budget.lines.push(line);
+    budget.current += line.change;
+    (await dbPromise).put('budgets', budget);
+    return budget;
+  }
+}
+
 export const idbDel = async (key: string) => {
   return (await dbPromise).delete('budgets', key);
 }

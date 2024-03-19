@@ -1,4 +1,5 @@
 .current-budget-main {
+  bottom: 0;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -6,7 +7,7 @@
   justify-content: center;
   min-height: 100%;
   width: 100%;
-  padding: 20px;
+  padding: 0 0 5rem 0;
 }
 
 .current-budget-main--dark {
