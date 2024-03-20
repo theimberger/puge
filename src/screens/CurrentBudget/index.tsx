@@ -25,9 +25,10 @@ const CurrentBudget = ({
       const budgetRecord:BudgetType | undefined = await idbGet(budgetName);
       if (!budgetRecord) return;
       setBudget(budgetRecord);
-      if (budgetRecord?.theme === 'dark') {
-        document.body.style.backgroundColor = '#333333';
-      }
+      document.body.style.backgroundColor = budgetRecord?.theme === 'dark' ?
+        '#333333' :
+        '#FFFFFF';
+
       setTimeout(() => {
         const root = document.querySelector('#root');
         if (root) root.scroll(0, root.scrollHeight)
@@ -49,6 +50,7 @@ const CurrentBudget = ({
   const updateBudget = async (newNumber: number, type: string) => {
     setModalState(false);
     let change = newNumber;
+    if (Number.isNaN(newNumber)) return;
     if (budget.decimalType !== 'none') change = newNumber * 100;
     change = Math.round(change);
     change = type === 'add' ? change : -change;

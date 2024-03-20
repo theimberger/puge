@@ -13,6 +13,7 @@ export default defineConfig({
       "background_color": "#335555",
       "description": "The simplist budgeting app.",
       "icons": [],
+      "theme_color": "#335555",
       "related_applications": []
     }
   })],
