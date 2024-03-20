@@ -19,7 +19,6 @@ const CurrentBudget = ({
 }) => {
   if (!budgetLines) return null;
 
-  console.log(budgetLines)
   let listClass = 'current-budget__budget-lines'
   if (theme === 'dark') listClass += ' current-budget__budget-lines--dark';
   if (theme === 'light') listClass += ' current-budget__budget-lines--light';

@@ -25,6 +25,9 @@ const CurrentBudget = ({
       const budgetRecord:BudgetType | undefined = await idbGet(budgetName);
       if (!budgetRecord) return;
       setBudget(budgetRecord);
+      if (budgetRecord?.theme === 'dark') {
+        document.body.style.backgroundColor = '#333333';
+      }
       setTimeout(() => {
         const root = document.querySelector('#root');
         if (root) root.scroll(0, root.scrollHeight)
