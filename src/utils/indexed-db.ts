@@ -1,5 +1,6 @@
 import { openDB, DBSchema } from 'idb';
 import BudgetType from '../types/BudgetType';
+import { getDateString } from '../screens/CurrentBudget/utils';
 
 interface LineType {
   change: number;
@@ -23,6 +24,7 @@ interface MyDB extends DBSchema {
       current: number;
       lines: LineType[];
       decimalType: string;
+      lastInterval: string;
     };
     key: string;
     indexes: { 'by-name': string };
@@ -54,6 +56,7 @@ export const addBudgetRecord = async (val: BudgetType) => {
     current: val.decimalType === "none" ? val.limit : val.limit * 100,
     lines: val.lines || [],
     decimalType: val.decimalType,
+    lastInterval: getDateString(),
   };
 
   return (await dbPromise).put('budgets', newBudget);
@@ -64,6 +67,15 @@ export const addBudgetLine = async (key: string, line: LineType) => {
   if (budget) {
     budget.lines.push(line);
     budget.current += line.change;
+    (await dbPromise).put('budgets', budget);
+    return budget;
+  }
+}
+
+export const updateBudgetInterval = async (key: string, interval: string) => {
+  const budget = await idbGet(key);
+  if (budget) {
+    budget.lastInterval = interval;
     (await dbPromise).put('budgets', budget);
     return budget;
   }

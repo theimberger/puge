@@ -1,7 +1,7 @@
 import './BudgetLines.css'
 
 import DateLine from './DateLine';
-import { getCurrentDateString } from './utils';
+import { getDateString } from './utils';
 
 
 const CurrentBudget = ({
@@ -40,7 +40,7 @@ const CurrentBudget = ({
     <ul className={listClass}>
       {budgetLines.map((line, index) => {
         const showDate = (
-          line.date !== getCurrentDateString() &&
+          line.date !== getDateString() &&
           line.date !== budgetLines[index + 1]?.date
         );
 

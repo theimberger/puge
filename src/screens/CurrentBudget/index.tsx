@@ -6,7 +6,7 @@ import BudgetType from '../../types/BudgetType'
 import BudgetLines from './BudgetLines'
 import DateLine from './DateLine'
 import InputModal from './InputModal'
-import { getCurrentDateString } from './utils'
+import { getDateString } from './utils'
 import { addBudgetLine, idbGet } from '../../utils/indexed-db'
 
 const CurrentBudget = ({
@@ -50,7 +50,7 @@ const CurrentBudget = ({
     change = Math.round(change);
     change = type === 'add' ? change : -change;
     const newBudget = await addBudgetLine(budget.name, {
-      date: getCurrentDateString(),
+      date: getDateString(),
       change: type === 'add' ? newNumber : -newNumber
     });
 
@@ -85,7 +85,7 @@ const CurrentBudget = ({
         { budget.unitPlacement === 'suffix' && <div>{budget.unit}</div> }
       </div>
       <div onClick={openInputModal}>
-        <DateLine date={getCurrentDateString()} />
+        <DateLine date={getDateString()} />
       </div>
       <div className='current-budget__title' onClick={goHome}>
       〈 { budget.name }

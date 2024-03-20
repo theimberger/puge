@@ -9,4 +9,5 @@ export default interface BudgetType {
   current?: number;
   lines?: { change: number; date: string; }[];
   decimalType: string;
+  lastInterval?: string;
 }

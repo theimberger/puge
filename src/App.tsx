@@ -1,11 +1,11 @@
 import { Component } from 'react'
 
-import { idbAll, addBudgetRecord } from './utils/indexed-db'
+import { idbAll, addBudgetRecord, addBudgetLine } from './utils/indexed-db'
 import { CreateBudget, CurrentBudget, Home } from './screens'
 
 import './App.css'
 import BudgetType from './types/BudgetType'
-import { getCurrentDateString } from './screens/CurrentBudget/utils'
+import { getDateString } from './screens/CurrentBudget/utils'
 
 interface AppStateType {
   currentScreen: string,
@@ -43,13 +43,55 @@ class App extends Component {
 
   updateBudgetLimit = async (name: string, budgets: BudgetType[]) => {
     const budget = budgets.find(budget => budget.name === name)
-    if (budget && budget.lines?.length) {
-      const currentDate = getCurrentDateString();
-      const lastUpdate = budget.lines[budget.lines.length - 1];
-      const period = budget.period;
-      if (period === 'daily') {
-        console.log(currentDate, lastUpdate);
+
+    if (!budget || !budget.lines?.length) return;
+
+    const dayInMs = 86400000;
+    let lastInterval = budget.lastInterval;
+    if (!lastInterval) lastInterval = budget.lines[budget.lines.length - 1].date;
+
+    const today = new Date(getDateString());
+
+    let targetDate = new Date(getDateString().split('.').join('/')).getTime(); // set target date to today
+    let lastUpdateDate = new Date(lastInterval.split('.').join('/')).getTime(); // set last update date to last interval
+
+    if (budget.period === 'weekly') { // if the budget is weekly, set the target date to the start of the week
+      targetDate -= (today.getDay() * dayInMs);
+      lastUpdateDate -= (new Date(lastUpdateDate).getDay() * dayInMs); // start of the week of the last update
+    }
+
+    if (budget.period === 'monthly') { // if the budget is monthly, set the target date to the start of the month
+      targetDate -= ((today.getDate() - 1) * dayInMs);
+      lastUpdateDate -= ((new Date(lastUpdateDate).getDate() - 1) * dayInMs); // the start of the month of the last update
+    }
+
+    if (lastUpdateDate >= targetDate) return;
+
+    let addBudget = true, i = 0;
+
+    while (addBudget && i < 10) {
+      if (budget.period === 'daily') {
+        // add a day to the last update date
+        lastUpdateDate += dayInMs;
+        addBudgetLine(name, { date: getDateString(new Date(lastUpdateDate)), change: budget.limit })
+        addBudget = lastUpdateDate < targetDate;
       }
+
+      if (budget.period === 'weekly') {
+        lastUpdateDate += (dayInMs * 7);
+        addBudgetLine(name, { date: getDateString(new Date(lastUpdateDate)), change: budget.limit })
+        addBudget = lastUpdateDate < targetDate;
+      }
+
+      if (budget.period === 'monthly') {
+        const lastUpdate = new Date(lastUpdateDate);
+        lastUpdate.setMonth(lastUpdate.getMonth() + 1);
+        lastUpdateDate = lastUpdate.getTime();
+        addBudgetLine(name, { date: getDateString(new Date(lastUpdateDate)), change: budget.limit })
+        addBudget = lastUpdateDate < targetDate;
+      }
+
+      i += 1; // prevent infinite loops
     }
   }
 

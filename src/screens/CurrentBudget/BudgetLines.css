@@ -19,7 +19,5 @@
 
 .current-budget__budget-lines .current-budget__date__line {
   margin: .3rem 1rem;
-  display: inline-block;
   width: 3em;
-  border: 1px solid #FFFFFF;
 }
