@@ -1,6 +1,6 @@
 import { Component } from 'react'
 
-import { idbAll, addBudgetRecord, addBudgetLine } from './utils/indexed-db'
+import { idbAll, addBudgetRecord, addBudgetLine, updateBudgetInterval } from './utils/indexed-db'
 import { CreateBudget, CurrentBudget, Home } from './screens'
 
 import './App.css'
@@ -50,18 +50,18 @@ class App extends Component {
     let lastInterval = budget.lastInterval;
     if (!lastInterval) lastInterval = budget.lines[budget.lines.length - 1].date;
 
-    const today = new Date(getDateString());
-
+    const today = new Date(getDateString().split('.').join('/'));
     let targetDate = new Date(getDateString().split('.').join('/')).getTime(); // set target date to today
     let lastUpdateDate = new Date(lastInterval.split('.').join('/')).getTime(); // set last update date to last interval
 
     if (budget.period === 'weekly') { // if the budget is weekly, set the target date to the start of the week
-      targetDate -= (today.getDay() * dayInMs);
+      console.log(today.getDay())
+      targetDate = targetDate - (today.getDay() * dayInMs);
       lastUpdateDate -= (new Date(lastUpdateDate).getDay() * dayInMs); // start of the week of the last update
     }
 
     if (budget.period === 'monthly') { // if the budget is monthly, set the target date to the start of the month
-      targetDate -= ((today.getDate() - 1) * dayInMs);
+      targetDate = targetDate - ((today.getDate() - 1) * dayInMs);
       lastUpdateDate -= ((new Date(lastUpdateDate).getDate() - 1) * dayInMs); // the start of the month of the last update
     }
 
@@ -93,6 +93,8 @@ class App extends Component {
 
       i += 1; // prevent infinite loops
     }
+
+    updateBudgetInterval(name, getDateString())
   }
 
   componentDidMount = () => {  
