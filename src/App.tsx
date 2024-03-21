@@ -23,6 +23,7 @@ class App extends Component {
   loadBudgets = async () => {
     const newState = { ...this.state }
     const budgets = await idbAll();
+
     if (budgets.length) {
       const activeBudget = document.cookie.split(';').find(c => c.includes('activeBudget'))
       const activeBudgetName = activeBudget?.split('=')[1]
@@ -50,17 +51,17 @@ class App extends Component {
     let lastInterval = budget.lastInterval;
     if (!lastInterval) lastInterval = budget.lines[budget.lines.length - 1].date;
 
+    const period = budget.period;
     const today = new Date(getDateString().split('.').join('/'));
     let targetDate = new Date(getDateString().split('.').join('/')).getTime(); // set target date to today
     let lastUpdateDate = new Date(lastInterval.split('.').join('/')).getTime(); // set last update date to last interval
 
-    if (budget.period === 'weekly') { // if the budget is weekly, set the target date to the start of the week
-      console.log(today.getDay())
+    if (period === 'weekly') { // if the budget is weekly, set the target date to the start of the week
       targetDate = targetDate - (today.getDay() * dayInMs);
       lastUpdateDate -= (new Date(lastUpdateDate).getDay() * dayInMs); // start of the week of the last update
     }
 
-    if (budget.period === 'monthly') { // if the budget is monthly, set the target date to the start of the month
+    if (period === 'monthly') { // if the budget is monthly, set the target date to the start of the month
       targetDate = targetDate - ((today.getDate() - 1) * dayInMs);
       lastUpdateDate -= ((new Date(lastUpdateDate).getDate() - 1) * dayInMs); // the start of the month of the last update
     }
@@ -70,24 +71,24 @@ class App extends Component {
     let addBudget = true, i = 0;
 
     while (addBudget && i < 10) {
-      if (budget.period === 'daily') {
+      if (period === 'daily') {
         // add a day to the last update date
         lastUpdateDate += dayInMs;
-        addBudgetLine(name, { date: getDateString(new Date(lastUpdateDate)), change: budget.limit })
+        await addBudgetLine(name, { date: getDateString(new Date(lastUpdateDate)), change: budget.limit })
         addBudget = lastUpdateDate < targetDate;
       }
 
-      if (budget.period === 'weekly') {
+      if (period === 'weekly') {
         lastUpdateDate += (dayInMs * 7);
-        addBudgetLine(name, { date: getDateString(new Date(lastUpdateDate)), change: budget.limit })
+        await addBudgetLine(name, { date: getDateString(new Date(lastUpdateDate)), change: budget.limit })
         addBudget = lastUpdateDate < targetDate;
       }
 
-      if (budget.period === 'monthly') {
+      if (period === 'monthly') {
         const lastUpdate = new Date(lastUpdateDate);
         lastUpdate.setMonth(lastUpdate.getMonth() + 1);
         lastUpdateDate = lastUpdate.getTime();
-        addBudgetLine(name, { date: getDateString(new Date(lastUpdateDate)), change: budget.limit })
+        await addBudgetLine(name, { date: getDateString(new Date(lastUpdateDate)), change: budget.limit })
         addBudget = lastUpdateDate < targetDate;
       }
 
@@ -109,6 +110,7 @@ class App extends Component {
 
   handleBudgetSelect = (name: string) => {
     document.cookie = `activeBudget=${name}`
+    this.updateBudgetLimit(name, this.state.budgets)
     this.setState({ activeBudget: name, currentScreen: 'budget'})
   }
 
