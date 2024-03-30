@@ -23,17 +23,16 @@ const CurrentBudget = ({
   if (theme === 'dark') listClass += ' current-budget__budget-lines--dark';
   if (theme === 'light') listClass += ' current-budget__budget-lines--light';
 
-  const ChangeLine = ({ change }: { change: number }) => {
+  const generateChangeWithUnit = (change: number) => {
     let changeText: number | string = change;
     if (decimalType !== 'none') changeText = (change / 100).toFixed(2);
     if (change < 0) changeText = changeText.toString().replace('-', '');
-
-    return (
-      <div className='current-budget__budget-line__change'>
-        {change < 0 && '-'}{unitPlacement === 'prefix' && unit}{changeText}{unitPlacement === 'suffix' && unit}
-      </div>
-    )
+    const prefix = `${change < 0 ? '-' : ''}${unitPlacement === 'prefix' ? unit : ''}`;
+    const suffix = unitPlacement === 'suffix' ? unit : '';
+    return `${prefix}${changeText}${suffix}`;
   }
+
+  let runningTotal = 0;
 
   return (
     <ul className={listClass}>
@@ -43,10 +42,19 @@ const CurrentBudget = ({
           line.date !== budgetLines[index + 1]?.date
         );
 
+        runningTotal += line.change;
+        let frozenTotal = '';
+        if (showDate) {
+          frozenTotal = String(generateChangeWithUnit(runningTotal));
+          runningTotal = 0;
+        }
+
         return (
           <li key={`${index}-budget-line`}>
-            <ChangeLine change={line.change} />
-            {showDate && <DateLine date={line.date} />}
+            <div className='current-budget__budget-line__change'>
+              {generateChangeWithUnit(line.change)}
+            </div>
+            {showDate && <DateLine date={line.date} value={frozenTotal}/>}
           </li>
         )
       })}

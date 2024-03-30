@@ -1,6 +1,13 @@
 import { Component } from 'react'
 
-import { idbAll, addBudgetRecord, addBudgetLine, updateBudgetInterval } from './utils/indexed-db'
+import {
+  idbAll,
+  addBudgetRecord,
+  addBudgetLine,
+  updateBudgetInterval,
+  setCurrentBudgetValue,
+} from './utils/indexed-db'
+
 import { CreateBudget, CurrentBudget, Home } from './screens'
 
 import './App.css'
@@ -94,6 +101,8 @@ class App extends Component {
 
       i += 1; // prevent infinite loops
     }
+
+    if (!budget.rolling) await setCurrentBudgetValue(budget.name, budget.limit);
 
     updateBudgetInterval(name, getDateString())
   }

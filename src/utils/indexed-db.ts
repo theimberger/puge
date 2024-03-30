@@ -81,6 +81,15 @@ export const updateBudgetInterval = async (key: string, interval: string) => {
   }
 }
 
+export const setCurrentBudgetValue = async (key: string, value: number) => {
+  const budget = await idbGet(key);
+  if (budget) {
+    budget.current = value;
+    (await dbPromise).put('budgets', budget);
+    return budget;
+  }
+}
+
 export const idbDel = async (key: string) => {
   return (await dbPromise).delete('budgets', key);
 }
