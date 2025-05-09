@@ -1,6 +1,6 @@
 import './InputModal.css'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 const InputModal = ({
   decimalType,
@@ -8,10 +8,13 @@ const InputModal = ({
   theme,
 } : {
   decimalType?: string;
-  handleUpdate: (number: number, type: string) => void;
+  handleUpdate: (number: number, type: string, note: string) => void;
   theme: string;
 }) => {
   const [inputNumbers, setInputNumbers] = useState<string[]>([])
+  const [noteText, setNoteText] = useState('')
+  const [showAddButton, setShowAddButton] = useState(true)
+  const inputRef = useRef<HTMLInputElement>(null)
   const buttonList = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "⌫"];
   if (decimalType === 'none') buttonList[9] = '';
   if (decimalType === 'double 0') buttonList[9] = '00';
@@ -33,16 +36,34 @@ const InputModal = ({
 
   const updateBudget = (type: string) => () => {
     let newNumber = parseFloat(inputNumbers.join(''))
-    handleUpdate(newNumber, type)
+    handleUpdate(newNumber, type, noteText)
     setInputNumbers([])
+    setNoteText('')
+    setShowAddButton(true)
   }
 
   let modalClass = 'budget-input-modal'
   if (theme === 'dark') modalClass += ' budget-input-modal--dark'
   if (theme === 'light') modalClass += ' budget-input-modal--light'
 
+  const handleAddNote = () => {
+    setShowAddButton(false)
+    inputRef?.current?.focus()
+  }
+
   return (
     <div className={modalClass}>
+      <div className='budget-input-modal__note'>
+        <input
+          id='budget-note-input'
+          className='budget-input-modal__note__input'
+          type='text'
+          value={noteText}
+          onChange={(e) => setNoteText(e.target.value)}
+          ref={inputRef}
+        />
+        { showAddButton && <button onClick={handleAddNote}>Add note</button> }
+      </div>
       <div className='budget-input-modal__display'>
         { inputNumbers.map((digit: string, i: number) => {
           let addDecimal = decimalType === 'double 0' && i === inputNumbers.length - 2

@@ -5,12 +5,19 @@
 }
 
 .current-budget__budget-lines li {
+  margin-top: .5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
+.current-budget__budget-line__change {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
 
 .current-budget__budget-lines .curent-budget__date {
   font-size: 1rem;

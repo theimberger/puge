@@ -47,7 +47,7 @@ const CurrentBudget = ({
     setModalState(true);
   }
 
-  const updateBudget = async (newNumber: number, type: string) => {
+  const updateBudget = async (newNumber: number, type: string, note: string) => {
     setModalState(false);
     let change = newNumber;
     if (Number.isNaN(newNumber)) return;
@@ -56,7 +56,8 @@ const CurrentBudget = ({
     change = type === 'add' ? change : -change;
     const newBudget = await addBudgetLine(budget.name, {
       date: getDateString(),
-      change: type === 'add' ? newNumber : -newNumber
+      change: type === 'add' ? newNumber : -newNumber,
+      note,
     });
 
     if (newBudget) setBudget(newBudget);

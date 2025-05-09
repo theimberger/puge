@@ -5,6 +5,7 @@ import { getDateString } from '../screens/CurrentBudget/utils';
 interface LineType {
   change: number;
   date: string;
+  note?: string;
 }
 
 interface MyDB extends DBSchema {
@@ -31,12 +32,14 @@ interface MyDB extends DBSchema {
   };
 }
 
-const dbPromise = openDB<MyDB>('PugeDb', 4, {
+const dbPromise = openDB<MyDB>('PugeDb', 5, {
   upgrade(db) {
-    const budgetstore = db.createObjectStore('budgets', {
-      keyPath: 'name',
-    });
-    budgetstore.createIndex('by-name', 'name');
+    if (!db.objectStoreNames.contains('budgets')) {
+      const budgetstore = db.createObjectStore('budgets', {
+        keyPath: 'name',
+      });
+      budgetstore.createIndex('by-name', 'name');
+    }
   },
 });
 

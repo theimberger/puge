@@ -11,7 +11,7 @@ const CurrentBudget = ({
   theme,
   decimalType,
 } : {
-  budgetLines?: { date: string; change: number; }[];
+  budgetLines?: { date: string; change: number; note?: string }[];
   unit: string;
   unitPlacement: string;
   theme: string;
@@ -52,7 +52,8 @@ const CurrentBudget = ({
         return (
           <li key={`${index}-budget-line`}>
             <div className='current-budget__budget-line__change'>
-              {generateChangeWithUnit(line.change)}
+              <span>{generateChangeWithUnit(line.change)}</span>
+              { line.note && <span className='current-budget__budget-line__note'>⇠ {line.note}</span> }
             </div>
             {showDate && <DateLine date={line.date} value={frozenTotal}/>}
           </li>
