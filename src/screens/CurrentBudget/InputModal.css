@@ -36,7 +36,7 @@
   width: 30rem;
   justify-content: flex-end;
   align-items: center;
-  top: 2rem;
+  top: calc(2rem + env(safe-area-inset-top));
   button {
     background: transparent;
     color: inherit;
@@ -54,7 +54,7 @@
   color: inherit;
   background: transparent;
   outline: none;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   text-align: right;
 }
 
