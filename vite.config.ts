@@ -14,7 +14,7 @@ export default defineConfig({
       "description": "The simplist budgeting app.",
       "icons": [
         {
-          "src": "/phone-icon.png",
+          "src": "/puge/phone-icon.png",
           "sizes": "360x360",
           "type": "image/png",
         },
